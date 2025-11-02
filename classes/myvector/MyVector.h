@@ -20,11 +20,9 @@ public:
 
     int& at(size_t index);
     const int& at(size_t index) const;
-    //size_t size();
-    //size_t capacity();
-    size_t getSize();
-    size_t getCapacity();
-    bool empty();
+    size_t getSize() const;
+    size_t getCapacity() const;
+    bool empty() const;
 
     void push_back(int value);
     void pop_back();
@@ -35,8 +33,8 @@ public:
     MyVector& operator=(const MyVector& other);
     int& operator[](size_t index);
     const int& operator[](size_t index) const;
-    bool operator==(const MyVector& other);
-    bool operator!=(const MyVector& other);
+    bool operator==(const MyVector& other) const;
+    bool operator!=(const MyVector& other) const;
     friend std::ostream& operator<<(std::ostream& os, const MyVector& vec);
 
     ~MyVector();

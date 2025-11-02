@@ -1,23 +1,16 @@
 class Solution {
 public:
     int maximumWealth(std::vector<std::vector<int>>& accounts) {
-        std::vector<int> wealths(accounts.size());
+        int max_wealth = 0;
 
-        for (int i = 0; i < accounts.size(); i++) {
+        for (const auto& customer_account : accounts) {
             int wealth = 0;
 
-            for (int j = 0; j < accounts[0].size(); j++) {
-                wealth += accounts[i][j];
+            for (int money : customer_account) {
+                wealth += money;
             }
 
-            wealths.push_back(wealth);
-        }
-
-        int max_wealth = wealths[0];
-
-        for (const auto& wealth : wealths) {
-            if (wealth > max_wealth)
-                max_wealth = wealth;
+            max_wealth = std::max(max_wealth, wealth);
         }
 
         return max_wealth;

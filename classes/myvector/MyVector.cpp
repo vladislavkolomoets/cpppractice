@@ -6,11 +6,11 @@ MyVector::MyVector(size_t _size) : MyVector(_size, 0)
 
 MyVector::MyVector(size_t _size, int value) : size(_size)
 {
-    capacity = size * capacity_coef;
+    capacity = size > 0 ? size * capacity_coef : 1; // 
 
     arr = new int[capacity];
 
-    for (int i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++)
     {
         arr[i] = value;
     }
@@ -22,34 +22,47 @@ MyVector::MyVector(const int* _array, size_t array_size)
     {
         size = array_size;
 
-        capacity = size * capacity_coef;
+        capacity = size > 0 ? size * capacity_coef : 1;
 
         arr = new int[capacity];
 
-        for (int i = 0; i < size; i++)
+        for (size_t i = 0; i < size; i++)
         {
             arr[i] = _array[i];
         }
+    }
+    else
+    {
+        size = 0;
+        capacity = 0;
+        arr = nullptr;
     }
 }
 
 MyVector::MyVector(const MyVector& other)
 {
-    size = other.size;
-
-    capacity = size * capacity_coef;
-
-    arr = new int[capacity];
-
-    for (int i = 0; i < size; i++)
+    if (other.arr != nullptr && other.capacity > 0)
     {
-        arr[i] = other.arr[i];
+        size = other.size;
+
+        capacity = other.capacity;
+
+        arr = new int[capacity];
+
+        for (size_t i = 0; i < size; i++)
+        {
+            arr[i] = other.arr[i];
+        }
+    }
+    else
+    {
+        arr = nullptr;
     }
 }
 
 int& MyVector::at(size_t index)
 {
-    if (index < 0 || index > size)
+    if (index >= size)
     {
         std::cerr << "index is out of range!" << std::endl;
     }
@@ -58,30 +71,31 @@ int& MyVector::at(size_t index)
 
 const int& MyVector::at(size_t index) const
 {
-    if (index < 0 || index > size)
+    if (index >= size)
     {
         std::cerr << "index is out of range!" << std::endl;
     }
     return arr[index];
 }
 
-size_t MyVector::getSize()
+size_t MyVector::getSize() const
 {
     return size;
 }
 
-size_t MyVector::getCapacity()
+size_t MyVector::getCapacity() const
 {
     return capacity;
 }
-
-bool MyVector::empty()
+ 
+bool MyVector::empty() const
 {
     if (arr == nullptr)
     {
         return true;
     }
-    return size == 0 ? true : false;
+
+    return size == 0;
 }
 
 void MyVector::push_back(int value)
@@ -95,7 +109,7 @@ void MyVector::push_back(int value)
 
         arr[size-1] = value;
     }
-    else if (size > 0 && size < capacity)
+    else if (size < capacity)
     {
         size++;
         arr[size - 1] = value;
@@ -107,7 +121,7 @@ void MyVector::push_back(int value)
 
         int* new_arr = new int[capacity];
 
-        for (int i = 0; i < size - 1; i++)
+        for (size_t i = 0; i < size - 1; i++)
         {
             new_arr[i] = arr[i];
         }
@@ -122,12 +136,15 @@ void MyVector::push_back(int value)
 
 void MyVector::pop_back()
 {
-    size--;
+    if (size > 0)
+    {
+        size--;
+    }
 }
 
 void MyVector::insert(size_t pos, int value)
 {
-    if (pos < 0 || pos > size)
+    if (pos > size)
     {
         std::cerr << "position is out of range!" << std::endl; 
     }
@@ -143,14 +160,14 @@ void MyVector::insert(size_t pos, int value)
 
         int* new_arr = new int[new_capacity];
 
-        for (int i = 0; i < pos; i++)
+        for (size_t i = 0; i < pos; i++)
         {
             new_arr[i] = arr[i];
         }
 
         new_arr[pos] = value;
 
-        for (int i = pos + 1; i < size; i++)
+        for (size_t i = pos + 1; i < size; i++)
         {
             new_arr[i] = arr[i - 1]; // warning
         }
@@ -163,7 +180,7 @@ void MyVector::insert(size_t pos, int value)
 
 void MyVector::erase(size_t pos)
 {
-    if (pos < 0 || pos > size)
+    if (pos >= size)
     {
         std::cerr << "position is out of range!" << std::endl;
     }
@@ -180,7 +197,7 @@ void MyVector::erase(size_t pos)
 
 void MyVector::clear()
 {
-    for (int i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++)
     {
         arr[i] = 0;
     }
@@ -190,15 +207,26 @@ void MyVector::clear()
 
 MyVector& MyVector::operator=(const MyVector& other)
 {
-    size = other.size;
+    if (this == &other) return *this;
 
-    capacity = size * capacity_coef;
-
-    arr = new int[capacity];
-
-    for (int i = 0; i < size; i++)
+    if (other.arr != nullptr && capacity > 0)
     {
-        arr[i] = other.arr[i]; // warning
+        delete[] arr;
+
+        size = other.size;
+
+        capacity = other.capacity;
+
+        arr = new int[capacity];
+
+        for (size_t i = 0; i < size; i++)
+        {
+            arr[i] = other.arr[i]; 
+        }
+    }
+    else
+    {
+        arr = nullptr;
     }
 
     return *this;
@@ -206,7 +234,7 @@ MyVector& MyVector::operator=(const MyVector& other)
 
 int& MyVector::operator[](size_t index)
 {
-    if (index < 0 || index > size)
+    if (index > size)
     {
         std::cerr << "index is out of range!" << std::endl;
     }
@@ -216,7 +244,7 @@ int& MyVector::operator[](size_t index)
 
 const int& MyVector::operator[](size_t index) const
 {
-    if (index < 0 || index > size)
+    if (index > size)
     {
         std::cerr << "index is out of range!" << std::endl;
     }
@@ -224,14 +252,14 @@ const int& MyVector::operator[](size_t index) const
     return arr[index];
 }
 
-bool MyVector::operator==(const MyVector& other)
+bool MyVector::operator==(const MyVector& other) const
 {
     if (size != other.size)
     {
         return false;
     }
 
-    for (int i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++)
     {
         if (arr[i] != other.arr[i])
         {
@@ -242,22 +270,9 @@ bool MyVector::operator==(const MyVector& other)
     return true;
 }
 
-bool MyVector::operator!=(const MyVector& other)
+bool MyVector::operator!=(const MyVector& other) const
 {
-    if (size != other.size)
-    {
-        return true;
-    }
-
-    for (int i = 0; i < size; i++)
-    {
-        if (arr[i] != other.arr[i])
-        {
-            return true;
-        }
-    }
-
-    return false;
+    return !(*this == other);
 }
 
 MyVector::~MyVector()
@@ -267,7 +282,7 @@ MyVector::~MyVector()
 
 std::ostream& operator<<(std::ostream& os, const MyVector& vec)
 {
-    for (int i = 0; i < vec.size; i++)
+    for (size_t i = 0; i < vec.size; i++)
     {
         os << vec.arr[i] << std::endl;
     }
