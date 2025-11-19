@@ -1,14 +1,19 @@
+#ifndef MYVECTOR_HPP
+#define MYVECTOR_HPP
+
 #include "MyVector.h"
 
-MyVector::MyVector(size_t _size) : MyVector(_size, 0)
+template <typename T>
+MyVector<T>::MyVector(size_t _size) : MyVector(_size, T{})
 {
 }
 
-MyVector::MyVector(size_t _size, int value) : size(_size)
+template <typename T>
+MyVector<T>::MyVector(size_t _size, T value) : size(_size)
 {
-    capacity = size > 0 ? size * capacity_coef : 1; // 
+    capacity = size > 0 ? size * capacity_coef : 1;
 
-    arr = new int[capacity];
+    arr = new T[capacity];
 
     for (size_t i = 0; i < size; i++)
     {
@@ -16,7 +21,8 @@ MyVector::MyVector(size_t _size, int value) : size(_size)
     }
 }
 
-MyVector::MyVector(const int* _array, size_t array_size)
+template <typename T>
+MyVector<T>::MyVector(const T* _array, size_t array_size)
 {
     if (_array != nullptr)
     {
@@ -24,7 +30,7 @@ MyVector::MyVector(const int* _array, size_t array_size)
 
         capacity = size > 0 ? size * capacity_coef : 1;
 
-        arr = new int[capacity];
+        arr = new T[capacity];
 
         for (size_t i = 0; i < size; i++)
         {
@@ -39,7 +45,8 @@ MyVector::MyVector(const int* _array, size_t array_size)
     }
 }
 
-MyVector::MyVector(const MyVector& other)
+template <typename T>
+MyVector<T>::MyVector(const MyVector<T>& other)
 {
     if (other.arr != nullptr && other.capacity > 0)
     {
@@ -47,7 +54,7 @@ MyVector::MyVector(const MyVector& other)
 
         capacity = other.capacity;
 
-        arr = new int[capacity];
+        arr = new T[capacity];
 
         for (size_t i = 0; i < size; i++)
         {
@@ -60,7 +67,8 @@ MyVector::MyVector(const MyVector& other)
     }
 }
 
-int& MyVector::at(size_t index)
+template <typename T>
+T& MyVector<T>::at(size_t index)
 {
     if (index >= size)
     {
@@ -69,7 +77,8 @@ int& MyVector::at(size_t index)
     return arr[index];
 }
 
-const int& MyVector::at(size_t index) const
+template <typename T>
+const T& MyVector<T>::at(size_t index) const
 {
     if (index >= size)
     {
@@ -78,17 +87,20 @@ const int& MyVector::at(size_t index) const
     return arr[index];
 }
 
-size_t MyVector::getSize() const
+template <typename T>
+size_t MyVector<T>::getSize() const
 {
     return size;
 }
 
-size_t MyVector::getCapacity() const
+template <typename T>
+size_t MyVector<T>::getCapacity() const
 {
     return capacity;
 }
  
-bool MyVector::empty() const
+template <typename T>
+bool MyVector<T>::empty() const
 {
     if (arr == nullptr)
     {
@@ -98,14 +110,15 @@ bool MyVector::empty() const
     return size == 0;
 }
 
-void MyVector::push_back(int value)
+template <typename T>
+void MyVector<T>::push_back(T value)
 {
     if (size == 0)
     {
         size++;
         capacity = size * capacity_coef;
         
-        arr = new int[capacity];
+        arr = new T[capacity];
 
         arr[size-1] = value;
     }
@@ -119,14 +132,14 @@ void MyVector::push_back(int value)
         size++;
         capacity = size * capacity_coef;
 
-        int* new_arr = new int[capacity];
+        T* new_arr = new T[capacity];
 
         for (size_t i = 0; i < size - 1; i++)
         {
             new_arr[i] = arr[i];
         }
 
-        new_arr[size - 1] = value; // warning
+        new_arr[size - 1] = value;
 
         delete[] arr;
 
@@ -134,7 +147,8 @@ void MyVector::push_back(int value)
     }
 }
 
-void MyVector::pop_back()
+template <typename T>
+void MyVector<T>::pop_back()
 {
     if (size > 0)
     {
@@ -142,7 +156,8 @@ void MyVector::pop_back()
     }
 }
 
-void MyVector::insert(size_t pos, int value)
+template <typename T>
+void MyVector<T>::insert(size_t pos, T value)
 {
     if (pos > size)
     {
@@ -152,13 +167,9 @@ void MyVector::insert(size_t pos, int value)
     {
         size++;
 
-        /*
-            if this->array was empty (capacity == 0) => capacity = 1
-            if not capacity = capacity * capacity_coef
-        */
         size_t new_capacity = (capacity == 0) ? 1 : capacity * capacity_coef;
 
-        int* new_arr = new int[new_capacity];
+        T* new_arr = new T[new_capacity];
 
         for (size_t i = 0; i < pos; i++)
         {
@@ -169,7 +180,7 @@ void MyVector::insert(size_t pos, int value)
 
         for (size_t i = pos + 1; i < size; i++)
         {
-            new_arr[i] = arr[i - 1]; // warning
+            new_arr[i] = arr[i - 1];
         }
 
         delete[] arr;
@@ -178,7 +189,8 @@ void MyVector::insert(size_t pos, int value)
     }
 }
 
-void MyVector::erase(size_t pos)
+template <typename T>
+void MyVector<T>::erase(size_t pos)
 {
     if (pos >= size)
     {
@@ -195,17 +207,19 @@ void MyVector::erase(size_t pos)
     }
 }
 
-void MyVector::clear()
+template <typename T>
+void MyVector<T>::clear()
 {
     for (size_t i = 0; i < size; i++)
     {
-        arr[i] = 0;
+        arr[i] = T{};
     }
 
     size = 0;
 }
 
-MyVector& MyVector::operator=(const MyVector& other)
+template <typename T>
+MyVector<T>& MyVector<T>::operator=(const MyVector<T>& other)
 {
     if (this == &other) return *this;
 
@@ -217,7 +231,7 @@ MyVector& MyVector::operator=(const MyVector& other)
 
         capacity = other.capacity;
 
-        arr = new int[capacity];
+        arr = new T[capacity];
 
         for (size_t i = 0; i < size; i++)
         {
@@ -232,7 +246,8 @@ MyVector& MyVector::operator=(const MyVector& other)
     return *this;
 }
 
-int& MyVector::operator[](size_t index)
+template <typename T>
+T& MyVector<T>::operator[](size_t index)
 {
     if (index > size)
     {
@@ -242,7 +257,8 @@ int& MyVector::operator[](size_t index)
     return arr[index];
 }
 
-const int& MyVector::operator[](size_t index) const
+template <typename T>
+const T& MyVector<T>::operator[](size_t index) const
 {
     if (index > size)
     {
@@ -252,7 +268,8 @@ const int& MyVector::operator[](size_t index) const
     return arr[index];
 }
 
-bool MyVector::operator==(const MyVector& other) const
+template <typename T>
+bool MyVector<T>::operator==(const MyVector<T>& other) const
 {
     if (size != other.size)
     {
@@ -270,17 +287,20 @@ bool MyVector::operator==(const MyVector& other) const
     return true;
 }
 
-bool MyVector::operator!=(const MyVector& other) const
+template <typename T>
+bool MyVector<T>::operator!=(const MyVector<T>& other) const
 {
     return !(*this == other);
 }
 
-MyVector::~MyVector()
+template <typename T>
+MyVector<T>::~MyVector()
 {
     delete[] arr;
 }
 
-std::ostream& operator<<(std::ostream& os, const MyVector& vec)
+template <typename U>
+std::ostream& operator<<(std::ostream& os, const MyVector<U>& vec)
 {
     for (size_t i = 0; i < vec.size; i++)
     {
@@ -289,3 +309,5 @@ std::ostream& operator<<(std::ostream& os, const MyVector& vec)
 
     return os;
 }
+
+#endif // MYVECTOR_CPP

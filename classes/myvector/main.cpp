@@ -7,7 +7,7 @@ void testMyVector()
 {
     // Test 1: Default constructor
     {
-        MyVector v;
+        MyVector<int> v;
         assert(v.getSize() == 0);
         assert(v.getCapacity() == 0);
         assert(v.empty());
@@ -16,7 +16,7 @@ void testMyVector()
 
     // Test 2: Constructor with size
     {
-        MyVector v(5);
+        MyVector<int> v(5);
         assert(v.getSize() == 5);
         assert(v.getCapacity() >= 5);
         for (size_t i = 0; i < 5; ++i)
@@ -28,7 +28,7 @@ void testMyVector()
 
     // Test 3: Constructor with size and value
     {
-        MyVector v(3, 42);
+        MyVector<int> v(3, 42);
         assert(v.getSize() == 3);
         for (size_t i = 0; i < 3; ++i)
         {
@@ -40,7 +40,7 @@ void testMyVector()
     // Test 4: Constructor with array
     {
         int arr[] = { 1, 2, 3, 4, 5 };
-        MyVector v(arr, 5);
+        MyVector<int> v(arr, 5);
         assert(v.getSize() == 5);
         for (size_t i = 0; i < 5; ++i)
         {
@@ -51,7 +51,7 @@ void testMyVector()
 
     // Test 5: push_back
     {
-        MyVector v;
+        MyVector<int> v;
         assert(v.empty());
 
         v.push_back(10);
@@ -75,7 +75,7 @@ void testMyVector()
 
     // Test 6: pop_back
     {
-        MyVector v;
+        MyVector<int> v;
         v.push_back(1);
         v.push_back(2);
         v.push_back(3);
@@ -104,7 +104,7 @@ void testMyVector()
     // Test 7: Insert at beginning
     {
         int arr[] = { 2, 3 };
-        MyVector v(arr, 2);
+        MyVector<int> v(arr, 2);
         v.insert(0, 1);
 
         assert(v.getSize() == 3);
@@ -117,7 +117,7 @@ void testMyVector()
     // Test 8: Insert in middle
     {
         int arr[] = { 1, 2, 3 };
-        MyVector v(arr, 3);
+        MyVector<int> v(arr, 3);
         v.insert(1, 99);
 
         assert(v.getSize() == 4);
@@ -131,7 +131,7 @@ void testMyVector()
     // Test 9: Insert at end
     {
         int arr[] = { 1, 2, 3 };
-        MyVector v(arr, 3);
+        MyVector<int> v(arr, 3);
         v.insert(3, 4);
 
         assert(v.getSize() == 4);
@@ -145,7 +145,7 @@ void testMyVector()
     // Test 10: Erase from beginning
     {
         int arr[] = { 1, 2, 3, 4 };
-        MyVector v(arr, 4);
+        MyVector<int> v(arr, 4);
         v.erase(0);
 
         assert(v.getSize() == 3);
@@ -158,7 +158,7 @@ void testMyVector()
     // Test 11: Erase from middle
     {
         int arr[] = { 10, 20, 30, 40 };
-        MyVector v(arr, 4);
+        MyVector<int> v(arr, 4);
         v.erase(1);
 
         assert(v.getSize() == 3);
@@ -171,7 +171,7 @@ void testMyVector()
     // Test 12: Erase from end
     {
         int arr[] = { 1, 2, 3, 4 };
-        MyVector v(arr, 4);
+        MyVector<int> v(arr, 4);
         v.erase(3);
 
         assert(v.getSize() == 3);
@@ -184,7 +184,7 @@ void testMyVector()
     // Test 13: Clear
     {
         int arr[] = { 1, 2, 3 };
-        MyVector v(arr, 3);
+        MyVector<int> v(arr, 3);
         assert(v.getSize() == 3);
 
         v.clear();
@@ -202,8 +202,8 @@ void testMyVector()
     // Test 14: Copy constructor
     {
         int arr[] = { 1, 2, 3 };
-        MyVector original(arr, 3);
-        MyVector copy = original;
+        MyVector<int> original(arr, 3);
+        MyVector<int> copy = original;
 
         assert(copy.getSize() == 3);
         assert(copy[0] == 1);
@@ -221,8 +221,8 @@ void testMyVector()
     {
         int arr1[] = { 1, 2, 3 };
         int arr2[] = { 4, 5, 6, 7 };
-        MyVector v1(arr1, 3);
-        MyVector v2(arr2, 4);
+        MyVector<int> v1(arr1, 3);
+        MyVector<int> v2(arr2, 4);
 
         v1 = v2;
         assert(v1.getSize() == 4);
@@ -246,10 +246,10 @@ void testMyVector()
         int arr3[] = { 1, 2, 4 };
         int arr4[] = { 1, 2 };
 
-        MyVector v1(arr1, 3);
-        MyVector v2(arr2, 3);
-        MyVector v3(arr3, 3);
-        MyVector v4(arr4, 2);
+        MyVector<int> v1(arr1, 3);
+        MyVector<int> v2(arr2, 3);
+        MyVector<int> v3(arr3, 3);
+        MyVector<int> v4(arr4, 2);
 
         assert(v1 == v2);
         assert(!(v1 == v3));
@@ -265,14 +265,14 @@ void testMyVector()
     // Test 17: At method
     {
         int arr[] = { 10, 20, 30 };
-        MyVector v(arr, 3);
+        MyVector<int> v(arr, 3);
 
         assert(v.at(0) == 10);
         assert(v.at(1) == 20);
         assert(v.at(2) == 30);
 
         // Test const version
-        const MyVector& const_v = v;
+        const MyVector<int>& const_v = v;
         assert(const_v.at(0) == 10);
         assert(const_v.at(1) == 20);
         assert(const_v.at(2) == 30);
@@ -282,7 +282,7 @@ void testMyVector()
 
     // Test 18: Empty vector operations
     {
-        MyVector v;
+        MyVector<int> v;
 
         assert(v.empty());
         assert(v.getSize() == 0);
@@ -294,6 +294,88 @@ void testMyVector()
         assert(v.getSize() == 0);
 
         std::cout << "Passed: Test 18 passed: Empty vector operations\n";
+    }
+    
+        // Test 19: Template with double type
+    {
+        MyVector<double> v;
+        v.push_back(1.5);
+        v.push_back(2.7);
+        v.push_back(3.9);
+        
+        assert(v.getSize() == 3);
+        assert(v[0] == 1.5);
+        assert(v[1] == 2.7);
+        assert(v[2] == 3.9);
+        
+        v.insert(1, 99.99);
+        assert(v.getSize() == 4);
+        assert(v[0] == 1.5);
+        assert(v[1] == 99.99);
+        assert(v[2] == 2.7);
+        assert(v[3] == 3.9);
+        
+        v.pop_back();
+        assert(v.getSize() == 3);
+        assert(v[2] == 2.7);
+        
+        std::cout << "Passed: Test 19: Template with double type\n";
+    }
+
+    // Test 20: Template with char type
+    {
+        MyVector<char> v(3, 'A');
+        assert(v.getSize() == 3);
+        assert(v[0] == 'A');
+        assert(v[1] == 'A');
+        assert(v[2] == 'A');
+        
+        v.push_back('Z');
+        assert(v.getSize() == 4);
+        assert(v[3] == 'Z');
+        
+        char arr[] = {'X', 'Y', 'Z'};
+        MyVector<char> v2(arr, 3);
+        assert(v2.getSize() == 3);
+        assert(v2[0] == 'X');
+        assert(v2[1] == 'Y');
+        assert(v2[2] == 'Z');
+        
+        std::cout << "Passed: Test 20: Template with char type\n";
+    }
+
+    // Test 21: Template with std::string type
+    {
+        MyVector<std::string> v;
+        v.push_back("Hello");
+        v.push_back("World");
+        v.push_back("!");
+        
+        assert(v.getSize() == 3);
+        assert(v[0] == "Hello");
+        assert(v[1] == "World");
+        assert(v[2] == "!");
+        
+        v.insert(1, "Beautiful");
+        assert(v.getSize() == 4);
+        assert(v[0] == "Hello");
+        assert(v[1] == "Beautiful");
+        assert(v[2] == "World");
+        assert(v[3] == "!");
+        
+        v.erase(2);
+        assert(v.getSize() == 3);
+        assert(v[0] == "Hello");
+        assert(v[1] == "Beautiful");
+        assert(v[2] == "!");
+        
+        MyVector<std::string> v2;
+        v2.push_back("Hello");
+        v2.push_back("Beautiful");
+        v2.push_back("!");
+        assert(v == v2);
+        
+        std::cout << "Passed: Test 21: Template with std::string type\n";
     }
 
     std::cout << "All done!" << std::endl;
